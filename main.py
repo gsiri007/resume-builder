@@ -34,15 +34,22 @@ def generate_resume(details: dict):
 
     class PDF(FPDF):
         def header(self) -> None:
-            self.set_font('helvetica', size=16)
-            self.cell(40, 10, name)
-            self.ln(20)
-            pdf.cell(
-                40, 
-                10, 
-                f'Phone: {phone}\nEmail: {email}\nLinkedin: {linkedin}\ngithub: {github}\nwebsite: {website}\n'
+            self.set_font('helvetica', size=18)
+            self.cell(text=name)
+            self.ln(10)
+            self.line(
+                x1 = self.l_margin, 
+                y1 = 18, 
+                x2 = self.w - self.l_margin, 
+                y2 = 18
             )
 
+            self.set_font('helvetica', size=9)
+            self.cell(
+                text=f'Phone: {phone} | Email: {email} | Linkedin: {linkedin}' 
+            )
+            self.ln(5)
+            self.cell(text=f'github: {github} | website: {website}')
 
 
     pdf = PDF(orientation='portrait', unit='mm', format='A4')
