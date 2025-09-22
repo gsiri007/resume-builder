@@ -7,5 +7,8 @@ resume:
     github: xxxxx@github.com
     website: xxxxx@xxxxx.xxx
   body:
+    education: [xxxxx, xxxxx, xxxxx]
+    educationDescription: [xxxxx, xxxxx, xxxxx]
+
   footer:
 

@@ -2,7 +2,7 @@ import yaml
 from fpdf import FPDF
 
 def main() -> None:
-    details = yaml_parser('test2.yml')
+    details = yaml_parser('./test2.yml')
     generate_resume(details)
 
 def yaml_parser(file_path: str) -> dict:
@@ -19,7 +19,13 @@ def yaml_parser(file_path: str) -> dict:
             'website' : data['resume']['header']['website'],
         }
 
+        body = {
+            'education' : data['resume']['body']['education'],
+            'educationDescription': data['resume']['body']['educationDescription'],
+        }
+
         details['header'] = header
+        details['body'] = body
 
     return details
 
@@ -31,6 +37,8 @@ def generate_resume(details: dict):
     linkedin = details['header']['linkedin']
     github = details['header']['github']
     website = details['header']['website']
+
+
 
     class PDF(FPDF):
         def header(self) -> None:
@@ -50,10 +58,27 @@ def generate_resume(details: dict):
             )
             self.ln(5)
             self.cell(text=f'github: {github} | website: {website}')
-
+            
 
     pdf = PDF(orientation='portrait', unit='mm', format='A4')
     pdf.add_page()
+
+    # body
+    pdf.ln(15)
+    pdf.set_font('helvetica', size=10, style='B')
+    pdf.cell(text='Educational Qualifications')
+    pdf.ln(8)
+
+    qualifications = details['body']['education']
+    descriptions = details['body']['educationDescription']
+    pdf.set_font('helvetica', size=8)
+
+    for i, qualification in enumerate(qualifications):
+        description = descriptions[i]
+        pdf.cell(text=f'- {qualification}: {description}')
+        pdf.ln(5)
+
+
     pdf.output('output')
 
 if __name__ == '__main__':
